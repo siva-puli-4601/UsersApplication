@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html
+<head>
+   
+    <title>Add User</title>
+    <link rel="stylesheet" href="add.css">
+</head>
+<body>
+    <div class="container">
+        <h2>Add User</h2>
+        <form id="addUserForm">
+            <div class="form-group">
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" required>
+            </div>
+            <div class="form-group">
+                <label for="department">Department:</label>
+                <input type="text" id="department" name="department" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="phone">Phone:</label>
+                <input type="tel" id="phone" name="phone" required>
+            </div>
+            <button type="submit">Add User</button>
+        </form>
+        <a href="index.html"><button>Back to Display</button></a>
+    </div>
+
+    <script>
+        document.getElementById('addUserForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+           
+            const name = document.getElementById('name').value.trim();
+            const department = document.getElementById('department').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const phone = document.getElementById('phone').value.trim();
+
+           
+            if (!name) {
+                alert('Name is required.');
+                return;
+            }
+            if (!department) {
+                alert('Department is required.');
+                return;
+            }
+            if (!email || !validateEmail(email)) {
+                alert('Please enter a valid email address.');
+                return;
+            }
+            if (!phone || !validatePhone(phone)) {
+                alert('Please enter a valid phone number.');
+                return;
+            }
+
+           
+            const users = JSON.parse(localStorage.getItem('users')) || [];
+            users.push({ name, department, email, phone });
+            localStorage.setItem('users', JSON.stringify(users));
+
+           
+            window.location.href = 'index.html';
+        });
+
+       
+        function validateEmail(email) {
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailPattern.test(email);
+        }
+
+        
+        function validatePhone(phone) {
+            const phonePattern = /^[\d\s\+\-()]{10,}$/;
+            return phonePattern.test(phone) && phone.length===10;
+        }
+    </script>
+</body>
+</html>
